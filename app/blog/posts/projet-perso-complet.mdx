@@ -1,0 +1,45 @@
+---
+title: 'App de Todo List mais pas que !'
+publishedAt: '2025-05-20'
+modifiedAt: '2025-05-20'
+summary: 'Projet simple de Todo List me permettant de pratiquer et d'apprendre de nouvelles choses.'
+---
+
+## L'app
+
+Je vais rester sur une application simple de Todo List avec la possibilité de créer des listes de tâches, d'ajouter des tâches à ces listes, de marquer les tâches comme terminées et d'archiver les listes. Je vais aussi mettre en place un système de connexion et d'inscription pour que chaque utilisateur puisse avoir sa propre liste de tâches.
+
+Mais le but principal de ce projet est de pratiquer et d'apprendre de nouvelles choses, comme la mise en place de tests à différents niveaux et les pipelines CI/CD, non exhaustif bien sûr.
+
+Lien vers le projet : https://github.com/sylvaindelarche/todo-app
+
+## Le stack technique
+
+Pour le backend, je compte utiliser Java avec Spring Boot, pour le frontend, je vais utiliser Angular (+ Typescript, PrimeNG et Tailwind CSS), et pour la base de données, je vais utiliser PostgreSQL.
+D'autres informations viendront plus tard sur les choix techniques.
+
+## Parcours de développement
+
+Dans un premier temps, je mets en place une API REST avec Spring Boot, qui va me permettre de gérer les listes de tâches. Pour le stockage des données, j'utilise initialement une base de données H2 (BDD simple qui s'associe bien avec Java), mais comme spécifié plus haut, cela viendra à changer plus tard.
+Par ailleurs, je reste sur une architecture simple de Modèle/Vue/Contrôleur (MVC).
+
+Voici l'API en place :
+
+```ascii
++------------------------+----------+-------------------------------+
+|        Feature         | Method   |            Endpoint           |
++------------------------+----------+-------------------------------+
+| Create List            | POST     | /lists                        |
+| Update List            | PUT      | /lists/{listId}               |
+| Archive List           | PATCH    | /lists/{listId}/archive       |
+| Remove List            | DELETE   | /lists/{listId}               |
+| Get Lists with Tasks   | GET      | /lists                        |
++------------------------+----------+-------------------------------+
+| Create Task            | POST     | /lists/{listId}/tasks         |
+| Update Task            | PUT      | /tasks/{taskId}               |
+| Complete Task          | PATCH    | /tasks/{taskId}/complete      |
+| Remove Task            | DELETE   | /tasks/{taskId}               |
++------------------------+----------+-------------------------------+
+```
+
+C'est maintenant au tour du frontend, je crée une page d'affichage de mes listes de tâches, avec la possibilité d'en créer une nouvelle, d'archiver ou de supprimer une liste existante. Pour chaque liste, j'affiche les tâches associées, avec la possibilité de créer une nouvelle tâche, de marquer une tâche comme terminée ou de supprimer une tâche existante. Pour différencier les listes archivées et les tâches terminées, je les affiche avec une lettre entre parenthèses.
