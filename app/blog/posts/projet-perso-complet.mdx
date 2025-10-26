@@ -1,30 +1,37 @@
 ---
-title: 'App de Todo List mais pas que !'
+title: 'App de Todo List avec une architecture complexifiée'
 publishedAt: '2025-05-20'
-modifiedAt: '2025-05-20'
+modifiedAt: '2025-10-26'
 summary: 'Projet simple de Todo List me permettant de pratiquer et d'apprendre de nouvelles choses.'
 ---
 
 ## L'app
 
-Je vais rester sur une application simple de Todo List avec la possibilité de créer des listes de tâches, d'ajouter des tâches à ces listes, de marquer les tâches comme terminées et d'archiver les listes. Je vais aussi mettre en place un système de connexion et d'inscription pour que chaque utilisateur puisse avoir sa propre liste de tâches.
+C'est une application simple de Todo List offrant la possibilité de créer des listes de tâches, d'ajouter des tâches à ces listes, de marquer les tâches comme terminées et d'archiver les listes.
 
-Mais le but principal de ce projet est de pratiquer et d'apprendre de nouvelles choses, comme la mise en place de tests à différents niveaux et les pipelines CI/CD, non exhaustif bien sûr.
+Cependant le but principal de ce projet est de pratiquer et d'intégrer différentes technologies même si elles vont sembler complexifier inutilement, tout en mettant en place des bonnes pratiques lié au développement et déploiement, comme les tests à différents niveaux et les pipelines CI/CD.
 
-Lien vers le projet : https://github.com/sylvaindelarche/todo-app
+Dans cette page je vais décrire les fonctionnalités actuelles de l'application ainsi que les technologies utilisées, c'est une page qui évoluera en fonction de l'avancement du projet.
 
-## Le stack technique
+[Lien](https://github.com/sylvaindelarche/todo-app) vers le projet avec des détails techniques pour l'installation et l'utilisation de l'application.
+## Fonctionnalités & technologies
 
-Pour le backend, je compte utiliser Java avec Spring Boot, pour le frontend, je vais utiliser Angular (+ Typescript, PrimeNG et Tailwind CSS), et pour la base de données, je vais utiliser PostgreSQL.
-D'autres informations viendront plus tard sur les choix techniques.
+### Backend
 
-## Parcours de développement
+J'utilise Java avec le framework Spring Boot pour développer l'API REST de l'application. Premièrement, il gère les opérations CRUD pour les listes et les tâches, ainsi que l'archivage des listes. De plus, l'API fournit des points de terminaison pour récupérer les journaux d'activité (derniers ou tous) et les métriques de performance, pour l'instant avec une basique. (voir Prometheus).
 
-Dans un premier temps, je mets en place une API REST avec Spring Boot, qui va me permettre de gérer les listes de tâches. Pour le stockage des données, j'utilise initialement une base de données H2 (BDD simple qui s'associe bien avec Java), mais comme spécifié plus haut, cela viendra à changer plus tard.
-Par ailleurs, je reste sur une architecture simple de Modèle/Vue/Contrôleur (MVC).
+Etant donné que Spring encourage un design MVC (Model-View-Controller) pour une séparation de responsabilités avec les concepts suivants : contrôleurs, répositories et modèles. Cela permet également de rendre le code plus maintenable et testable.
 
-Voici l'API en place :
+J'ai pas mal d'expérience avec Java mais pas spécialement avec Spring Boot, donc c'est aussi l'occasion d'apprendre et de me familiariser avec ce framework très populaire.
 
+### Frontend
+
+J'ai décidé d'utiliser Angular pour le frontend de l'application. L'interface utilisateur permet aux utilisateurs de créer, afficher, mettre à jour et supprimer des listes et des tâches. De plus, les utilisateurs peuvent marquer les tâches comme terminées et archiver les listes.
+Angular est un framework que je voulais apprendre depuis un moment, donc c'est une bonne opportunité pour moi de le faire.
+
+### API en place
+
+Core
 ```ascii
 +------------------------+----------+-------------------------------+
 |        Feature         | Method   |            Endpoint           |
@@ -42,4 +49,53 @@ Voici l'API en place :
 +------------------------+----------+-------------------------------+
 ```
 
-C'est maintenant au tour du frontend, je crée une page d'affichage de mes listes de tâches, avec la possibilité d'en créer une nouvelle, d'archiver ou de supprimer une liste existante. Pour chaque liste, j'affiche les tâches associées, avec la possibilité de créer une nouvelle tâche, de marquer une tâche comme terminée ou de supprimer une tâche existante. Pour différencier les listes archivées et les tâches terminées, je les affiche avec une lettre entre parenthèses.
+Journals
+```ascii
++------------------------+----------+-------------------------------+
+|        Feature         | Method   |            Endpoint           |
++------------------------+----------+-------------------------------+
+| Get all                | GET      | /journals                     |
+| Get latest             | GET      | /journals/latest              |
++------------------------+----------+-------------------------------+
+```
+
+Metrics
+```ascii
++------------------------+----------+-------------------------------+
+|        Feature         | Method   |            Endpoint           |
++------------------------+----------+-------------------------------+
+| Get metrics            | GET      | /metrics                      |
++------------------------+----------+-------------------------------+
+```
+
+### Dockerisation
+
+Docker est utilisé pour conteneuriser l'application, facilitant ainsi le déploiement et la gestion des différentes composantes. Chaque service décrit dans ce blog est exécuté dans son propre conteneur Docker.
+Note: En mode de développement actuellement, la partie serveur du backend et le frontend qui sont exécutés directement sur la machine hôte pour faciliter le développement.
+
+L'avantage est que chaque composant est isolé et fait partie d'un même réseau virtuel, ce qui permet une communication facile entre eux. De plus, Docker Compose est utilisé pour orchestrer et gérer les différents conteneurs, simplifiant ainsi le processus de démarrage et d'arrêt de l'ensemble de l'application.
+
+### Base de données: PostgreSQL
+
+PostgreSQL est utilisé comme base de données relationnelle pour stocker les listes de tâches, les tâches elles-mêmes, ainsi que les journaux d'activité. J'ai choisi PostgreSQL pour sa robustesse, ses performances et son support des fonctionnalités avancées. Même si pour l'instant le modèle de données est assez simple.
+
+Il y a la table `lists` pour les listes de tâches, la table `tasks` pour les tâches, et la table `journals` pour les journaux d'activité.
+Une relation un-à-plusieurs est mise en place entre les listes et les tâches, chaque liste pouvant contenir plusieurs tâches.
+
+### Messaging queue: RabbitMQ
+
+RabbitMQ est utilisé comme système de messagerie pour gérer la communication entre les différents services de l'application. Il permet de découpler les services et d'assurer une communication asynchrone, ce qui est particulièrement utile pour les tâches de traitement en arrière-plan.
+Dans ce projet, RabbitMQ est utilisé pour envoyer des messages lorsque des listes ou des tâches sont créées, mises à jour ou supprimées, afin de générer des journaux d'activité.
+De plus, RabbitMQ est également utilisé pour envoyer des messages à partir de Spark pour compter les mots uniques dans les titres des listes de tâches et les noms des tâches.
+
+### Métriques: Prometheus
+
+Prometheus est utilisé pour collecter des métriques de performance de l'application backend. Actuellement, une métrique basique appelée 'unique_words' pour compter le nombre de mots uniques dans les titres des listes de tâches et les noms des tâches.
+
+### Traitement de données: Apache Spark
+
+Spark est un outil puissant pour le traitement de données en masse. Dans ce projet, il est simplement utilisé pour compter les mots uniques dans les titres des listes de tâches et les noms des tâches. C'est une manière d'intégrer Spark dans l'application et de se familiariser avec son utilisation.
+
+### Divers
+
+Pour chacune des parties de l'application, j'essaye de faire en sorte que peu importe le contexte (développement local, test, production), l'application puisse s'adapter automatiquement en fonction des variables d'environnement. Cela permet une plus grande flexibilité et facilite le déploiement dans différents environnements.
