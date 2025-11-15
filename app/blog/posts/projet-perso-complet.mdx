@@ -105,6 +105,12 @@ Prometheus est utilisé pour collecter des métriques de performance de l'applic
 
 Spark est un outil puissant pour le traitement de données en masse. Dans ce projet, il est simplement utilisé pour compter les mots uniques dans les titres des listes de tâches et les noms des tâches. C'est une manière d'intégrer Spark dans l'application et de se familiariser avec son utilisation.
 
+### Les tests
+
+Dans un but de garantir une non-regression et de valider le bon fonctionnement de l'application, plusieurs tests sont mis en place.
+Des tests unitaires sont mis en place pour le backend avec JUnit et Mockito, couvrant les contrôlleurs pour l'instant sur les opérations décrites dans l'API.
+Pour le frontend, des tests minimals des composants sont ajoutés avec Jest, cela permet de vérifier que les composants Angular sont bien créés.
+
 ### Divers
 
 Pour chacune des parties de l'application, j'essaye de faire en sorte que peu importe le contexte (développement local, test, production), l'application puisse s'adapter automatiquement en fonction des variables d'environnement. Cela permet une plus grande flexibilité et facilite le déploiement dans différents environnements.
