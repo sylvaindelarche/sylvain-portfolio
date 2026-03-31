@@ -1,7 +1,7 @@
 ---
 title: 'App de Todo List avec une architecture complexifiée'
 publishedAt: '2025-05-20'
-modifiedAt: '2025-10-26'
+modifiedAt: '2026-03-31'
 summary: 'Projet simple de Todo List me permettant de pratiquer et d'apprendre de nouvelles choses.'
 ---
 
@@ -105,11 +105,23 @@ Prometheus est utilisé pour collecter des métriques de performance de l'applic
 
 Spark est un outil puissant pour le traitement de données en masse. Dans ce projet, il est simplement utilisé pour compter les mots uniques dans les titres des listes de tâches et les noms des tâches. C'est une manière d'intégrer Spark dans l'application et de se familiariser avec son utilisation.
 
+### CI/CD: Jenkins
+
+Jenkins est une plateforme permettant l'execution de pipelines permettant d'automatiser la vérification et le bon fonctionnement du projet dès lors qu'un changement est prêt à être inclus dans Git. Cela concerne donc les builds, tests maia aussi le déploiement, par exemple pour ce projet ça me permet actuellement de :
+- Construire le backend et le frontend, et lancer leurs tests unitaires.
+- Construire les différentes images docker (backend + frontend mais également les customisations de Prometheus et Spark décrites plus haut), et les mettre sur le registre Docker privé de mon serveur.
+- Lancer des tests d'intégration.
+- Déployer le projet en format production sur Kubernetes, dont un cluster avec un noeud qui est disponible sur mon serveur.
+
+Tout comme le reste du projet, c'est un aspect qui évoluera au fil du temps.
+
 ### Les tests
 
 Dans un but de garantir une non-regression et de valider le bon fonctionnement de l'application, plusieurs tests sont mis en place.
 Des tests unitaires sont mis en place pour le backend avec JUnit et Mockito, couvrant les contrôlleurs pour l'instant sur les opérations décrites dans l'API.
 Pour le frontend, des tests minimals des composants sont ajoutés avec Jest, cela permet de vérifier que les composants Angular sont bien créés.
+
+D'autres types de tests sont à venir comme des tests d'intégration qui pourront idéalement être joués durant le CI/CD
 
 ### Divers
 
