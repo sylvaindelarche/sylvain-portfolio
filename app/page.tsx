@@ -11,8 +11,11 @@ export default function Page() {
         
         {`Je suis experimenté dans la creation d'interfaces utilisateurs dynamiques, et de logique serveur robustes, avec des connaissances dans le CI/CD et le déploiement de services avec Docker et Kubernetes.`}<br /><br />
         
-        {`Au cours de ma vie professionnelle, j'ai pu améliorer la qualité du code, l'optimiser mais aussi ajouter de nouvelles fonctionnalités.
-        Toujours dans un but de m'améliorer, je suis à la recherche de nouveaux challenges, et de nouvelles technologies à expérimenter.`}<br />
+        {`Au cours de ma vie professionnelle, j'ai pu travailler sur des projets variés et implémenter de nouvelles fonctionnalités, résoudre des problèmes, ainsi que collaborer en équipe.`}<br /><br />
+
+        {`Toujours dans un but de m'améliorer, je suis à la recherche de nouveaux challenges, et de nouvelles technologies à expérimenter.`}<br /><br />
+
+        {`Bonne navigation dans ce portfolio !`}<br />
       </p>
       <div className="my-8">
         <BlogPosts />
